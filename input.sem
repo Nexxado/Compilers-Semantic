@@ -1,0 +1,91 @@
+redeclarations
+
+B0:
+tmp1: 1, 1, 2
+
+B1:
+a: 5, 6
+x: 5, 14
+
+B3:
+t: 16, 16, 16
+
+references
+
+a:
+ref line: 8
+ref block: 2
+dec line: 5
+
+tmp1: 
+ref line: 8
+ref block: 2
+dec line: 5
+
+b:
+ref line: 9
+ref block: 2
+dec line: 1
+
+b:
+ref line: 9
+ref block: 2
+dec line: 10
+
+b:
+ref line: 11
+ref block: 2
+dec line: 10
+
+tmp1:
+ref line: 11
+ref block: 2
+dec line: 5
+
+tmp1:
+ref line: 13
+ref block: 1
+dec line: 5
+
+a:
+ref line: 13
+ref block: 1
+dec line: 5
+
+b:
+ref line: 13
+ref block: 1
+dec line: 1
+
+c:
+ref line: 17
+ref block: 3
+dec line: undeclared
+
+a:
+ref line: 17
+ref block: 3
+dec line: 5
+
+b:
+ref line: 17
+ref block: 3
+dec line: 1
+
+x:
+ref line: 17
+ref block: 3
+dec line: 5
+
+c:
+ref line: 19
+ref block: 1
+dec line: undeclared
+
+c:
+ref line: 21
+ref block: 1
+dec line: 20
+
+
+

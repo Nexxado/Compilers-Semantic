@@ -81,6 +81,10 @@ public class Scanner {
 			case '*':
 				c = charReader.getChar();
 				return new TokenInfo(TokenTypeEnum.MULT, "", line);
+				
+			case ',':
+				c = charReader.getChar();
+				return new TokenInfo(TokenTypeEnum.COMMA, "", line);
 
 			case '/':
 

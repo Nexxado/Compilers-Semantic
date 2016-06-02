@@ -128,8 +128,9 @@ public class Parser {
 					throw new LL1Exception();
 				
 				// Insert ID attributes to graph
-				if(token.getType() == TokenTypeEnum.ID)
-					check.addChild(new TreeNode(token.getAttribute() + "_" + nodeId++));
+				TreeNode tokenNode = new TreeNode("\"" + token.toString() +  "_" + nodeId++ + "\"");
+				tokenNode.setToken(token);
+				check.addChild(tokenNode);
 
 			} while(token.getType() != TokenTypeEnum.EOF);
 			
