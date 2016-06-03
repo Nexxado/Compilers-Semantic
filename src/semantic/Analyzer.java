@@ -7,7 +7,8 @@ public class Analyzer {
 	
 	//Filenames
 	private String input;
-	private final String config = "src/semantic/config.txt";
+	private final String CONFIG = "src/semantic/config.txt";
+	
 	
 	
 	private Parser parser;
@@ -16,14 +17,15 @@ public class Analyzer {
 	
 	public Analyzer(String inputFilename) {
 		input = inputFilename;
-		parser = new Parser(config, input);
+		parser = new Parser(CONFIG, input);
 	}
 	
 	public TreeNode analyze() {
 		
 		TreeNode root = parser.yyLL1parse();
-		
 		return root;
+		
+		
 		
 	}
 

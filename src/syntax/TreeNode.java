@@ -7,11 +7,13 @@ import lexcial.TokenInfo;
 public class TreeNode {
 
 	private String name;
+	private int id;
 	private ArrayList<TreeNode> children;
 	private TokenInfo token;
 	
-	public TreeNode(String name) {
+	public TreeNode(String name, int id) {
 		this.name = name;
+		this.id = id;
 		children = new ArrayList<TreeNode>();
 		token = null;
 	}
@@ -30,7 +32,10 @@ public class TreeNode {
 	
 	@Override
 	public String toString() {
-		return name;
+		if(token == null)
+			return name + "_" + id;
+		
+		return "\"" + name + "_" + id + "\"";
 	}
 	
 	public void setToken(TokenInfo token) {

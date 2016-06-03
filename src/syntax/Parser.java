@@ -62,8 +62,8 @@ public class Parser {
 		
 		//Initialize Stack
 		int nodeId = 0;
-		TreeNode root = new TreeNode(non_terminals.get(0) + "_" + nodeId++);
-		parse_stack.push(new TreeNode(END_OF_INPUT_ID));
+		TreeNode root = new TreeNode(non_terminals.get(0), nodeId++);
+		parse_stack.push(new TreeNode(END_OF_INPUT_ID, -1));
 		parse_stack.push(root);
 		
 		
@@ -90,7 +90,7 @@ public class Parser {
 					throw new LL1Exception();
 				
 				TreeNode check = parse_stack.pop();
-				String check_noid = check.getName().substring(0, check.getName().indexOf('_'));
+				String check_noid = check.getName();
 				
 				//While stack top is non_terminal
 				while(non_terminals.contains(check_noid)) {
@@ -105,19 +105,19 @@ public class Parser {
 					
 					//Insert Grammar rule to stack (in reverse order)
 					for(int i = tab_tokens.length - 1; i >= 0; i--) {
-						TreeNode node = new TreeNode(tab_tokens[i] + "_" + nodeId++);
+						TreeNode node = new TreeNode(tab_tokens[i], nodeId++);
 						parse_stack.push(node);
 						check.addChild(node);
 					}
 					
 					
 					check = parse_stack.pop();
-					check_noid = check.getName().substring(0, check.getName().indexOf('_'));
+					check_noid = check.getName();
 					
 					//If Epsilon, discard it and continue
 					if(check_noid.equals(EPSILON_ID)) {
 						check = parse_stack.pop();
-						check_noid = check.getName().substring(0, check.getName().indexOf('_'));
+						check_noid = check.getName();
 						continue;
 					}
 				}
@@ -127,8 +127,8 @@ public class Parser {
 				if(!check_noid.equals(tokenTypeString))
 					throw new LL1Exception();
 				
-				// Insert ID attributes to graph
-				TreeNode tokenNode = new TreeNode("\"" + token.toString() +  "_" + nodeId++ + "\"");
+				// Insert Tokens to Tree
+				TreeNode tokenNode = new TreeNode(token.toString(), nodeId++);
 				tokenNode.setToken(token);
 				check.addChild(tokenNode);
 

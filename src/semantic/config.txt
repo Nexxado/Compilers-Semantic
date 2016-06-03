@@ -1,17 +1,17 @@
 terminals=MAIN,EOF,LC,RC,INT,ID,COMMA,SC,ASSIGN,PLUS,MULT,NUM
 #Start
-START=PROG,,,,D;START,,,,,,,
+GLOBAL=PROG,,,,DECLARATION;GLOBAL,,,,,,,
 #Main Program
 PROG=MAIN;BLOCK;EOF,,,,,,,,,,,
 #Block
-BLOCK=,,LC;E;RC,,,,,,,,,
+BLOCK=,,LC;EXPR;RC,,,,,,,,,
 #Expression
-E=,,BLOCK;E,eps,D;E,A;E,,,,,,
+EXPR=,,BLOCK;EXPR,eps,DECLARATION;EXPR,ASSIGNMENT;EXPR,,,,,,
 #Declaration
-D=,,,,INT;ID;F,,,,,,,
-F=,,,,,,COMMA;ID;F,SC,,,,
+DECLARATION=,,,,INT;ID;MULTIPLE,,,,,,,
+MULTIPLE=,,,,,,COMMA;ID;MULTIPLE,SC,,,,
 #Assignment
-A=,,,,,ID;ASSIGN;W;X;SC,,,,,,
+ASSIGNMENT=,,,,,ID;ASSIGN;VAR;ARITHMETIC;SC,,,,,,
 #Expression's Tail
-X=,,,,,,,eps,,PLUS;W;X,MULT;W;X,
-W=,,,,,ID,,,,,,NUM
+ARITHMETIC=,,,,,,,eps,,PLUS;VAR;ARITHMETIC,MULT;VAR;ARITHMETIC,
+VAR=,,,,,ID,,,,,,NUM

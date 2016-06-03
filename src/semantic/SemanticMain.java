@@ -48,8 +48,8 @@ public class SemanticMain {
 			
 //		System.err.println(node);
 		for(int i = node.getChildren().size() - 1; i >= 0; i--) {
-			String childName = node.getChildren().get(i).getName();
-			builder.append(new GraphNode(node.getName(), childName) + System.lineSeparator());
+			String childName = node.getChildren().get(i).toString();
+			builder.append(new GraphNode(node.toString(), childName) + System.lineSeparator());
 		}
 			
 		for(int i = 0; i < node.getChildren().size(); i++) {
