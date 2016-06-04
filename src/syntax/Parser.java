@@ -128,9 +128,7 @@ public class Parser {
 					throw new LL1Exception();
 				
 				// Insert Tokens to Tree
-				TreeNode tokenNode = new TreeNode(token.toString(), nodeId++);
-				tokenNode.setToken(token);
-				check.addChild(tokenNode);
+				check.setToken(token);
 
 			} while(token.getType() != TokenTypeEnum.EOF);
 			

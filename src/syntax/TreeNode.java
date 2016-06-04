@@ -35,7 +35,7 @@ public class TreeNode {
 		if(token == null)
 			return name + "_" + id;
 		
-		return "\"" + name + "_" + id + "\"";
+		return "\"" + token.toString() + "_" + id + "\"";
 	}
 	
 	public void setToken(TokenInfo token) {
