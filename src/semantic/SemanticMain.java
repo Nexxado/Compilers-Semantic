@@ -1,7 +1,15 @@
 package semantic;
 
-import syntax.GraphNode;
-import syntax.TreeNode;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import lexcial.TokenInfo;
 
 public class SemanticMain {
 	
@@ -13,50 +21,111 @@ public class SemanticMain {
 		}
 		
 		String inputFilename = args[0];
-		
-		Analyzer analyzer = new Analyzer(inputFilename);
-		
-		analyzer.analyze();
+		Analyzed analyzed = new Analyzer(inputFilename).analyze();
 
-//		System.out.println(generateGraph(analyzer.analyze()));
-	}
-	
-	
-	/*************************/
-	/***** DEBUG METHODS *****/
-	/*************************/
-	//TODO Delete once done.
-	
-	/**
-	 * @param root : TreeNode representing the Parse Tree's root node
-	 * @return A String representing the parse tree as a graph, according to http://www.webgraphviz.com/
-	 */
-	private static String generateGraph(TreeNode root) {
-		if(root == null)
-			return null;
-		
+		//Generate redeclaration list and reference list
 		StringBuilder builder = new StringBuilder();
-		builder.append("digraph G {" + System.lineSeparator());
-		generateTree(root, builder);
+		builder.append(buildRedeclarationsList(analyzed.getBlocks()));
+		builder.append(buildReferencesList(analyzed.getReferences()));
 		
-		builder.append("}");
-		return builder.toString();
-	}
+		
+		try {
 
-	
-	private static void generateTree(TreeNode node, StringBuilder builder) {
-		if(node == null)
+			//Write redeclaration list and reference list to output file
+			String outputFilename = inputFilename.substring(0, inputFilename.lastIndexOf('.')) + ".sem";
+			File outputFile = new File(outputFilename);
+			
+			FileWriter writer = new FileWriter(outputFile);
+			writer.write(builder.toString());
+			writer.close();
+
+		} catch (IOException e) {
+			System.err.println("[ERROR] Failed writing to output file: " + e.toString());
 			return;
-			
-//		System.err.println(node);
-		for(int i = node.getChildren().size() - 1; i >= 0; i--) {
-			String childName = node.getChildren().get(i).toString();
-			builder.append(new GraphNode(node.toString(), childName) + System.lineSeparator());
 		}
-			
-		for(int i = 0; i < node.getChildren().size(); i++) {
-			generateTree(node.getChildren().get(i), builder);
-		}
+		
 	}
+	
+	
+	
+	/************************************/
+	/***** Build Redeclaration List *****/
+	/************************************/
+	private static String buildRedeclarationsList(ArrayList<Block> blocks) {
+		
+		StringBuilder redeclareBuilder = new StringBuilder();
+		redeclareBuilder.append("redeclarations\n\n");
+		int noRedeclareCounter = 0;
 
+
+		for(int i = 0; i < blocks.size(); i++) {
+
+			Block block = blocks.get(i);
+
+			redeclareBuilder.append("block: " + block.getId() + "\n");
+			LinkedHashMap<String, ArrayList<TokenInfo>> declarations = block.getDeclarations();
+			Iterator<Entry<String, ArrayList<TokenInfo>>> it = declarations.entrySet().iterator();
+			int blockNoRedeclareCounter = 0;
+
+			//Iterate over block's declarations to check for redeclarations
+			while(it.hasNext()) {
+
+				Map.Entry<String, ArrayList<TokenInfo>> entry = it.next();
+				ArrayList<TokenInfo> tokens = entry.getValue();
+
+				//Check if variable was only declared once.
+				if(tokens.size() <= 1) {
+					blockNoRedeclareCounter++;
+					continue;
+				}
+
+				//Add redeclaration entry
+				redeclareBuilder.append(entry.getKey() + ": ");
+				for(int j = 0; j < tokens.size(); j++) {
+
+					redeclareBuilder.append(tokens.get(j).getLine());
+
+					if(j != tokens.size() - 1)
+						redeclareBuilder.append(", ");
+				}
+				redeclareBuilder.append("\n");
+			}
+
+			//If block has no redeclarations, delete block redeclaration entry
+			if(blockNoRedeclareCounter == block.getDeclarations().size()) {
+				noRedeclareCounter++;
+				redeclareBuilder.delete(redeclareBuilder.lastIndexOf("\n"), redeclareBuilder.length());
+				redeclareBuilder.delete(redeclareBuilder.lastIndexOf("\n"), redeclareBuilder.length());
+			}
+			redeclareBuilder.append("\n");
+		}
+
+		//If all blocks have no redeclaration entry, add "no redeclarations" title.
+		if(noRedeclareCounter == blocks.size())
+			redeclareBuilder.replace(0, redeclareBuilder.length(), "no redeclarations\n\n");
+
+		return redeclareBuilder.toString();
+	}
+	
+	
+	/********************************/
+	/***** Build Reference List *****/
+	/********************************/
+	private static String buildReferencesList(ArrayList<Reference> references) {
+		
+		StringBuilder referenceBuilder = new StringBuilder();
+		
+		if(references.isEmpty()) 
+			referenceBuilder.append("no references\n\n");
+		else {
+		
+			referenceBuilder.append("references\n\n");
+			for(int i = 0; i < references.size(); i++) {
+				referenceBuilder.append(references.get(i) + "\n");
+			}
+		
+		}
+		
+		return referenceBuilder.toString();
+	}
 }
