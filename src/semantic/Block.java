@@ -24,6 +24,19 @@ public class Block {
 		return id;
 	}
 	
+	public Block getParent() {
+		return parent;
+	}
+	
+	public HashMap<String, ArrayList<TokenInfo>> getReferences() {
+		return references;
+	}
+	
+	public HashMap<String, ArrayList<TokenInfo>> getDeclarations() {
+		return declarations;
+	}
+	
+	
 	public void addReference(TokenInfo token) {
 		if(token.getType() != TokenTypeEnum.ID) {
 			System.err.println("Trying to addReference of non-ID"); //TODO DEBUG

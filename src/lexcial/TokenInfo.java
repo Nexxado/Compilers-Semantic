@@ -24,4 +24,8 @@ public class TokenInfo {
 	public String getAttribute() {
 		return attribute;
 	}
+	
+	public int getLine() {
+		return (line + 1);
+	}
 }
