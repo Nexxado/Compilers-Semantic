@@ -15,8 +15,10 @@ public class SemanticMain {
 		String inputFilename = args[0];
 		
 		Analyzer analyzer = new Analyzer(inputFilename);
+		
+		analyzer.analyze();
 
-		System.out.println(generateGraph(analyzer.analyze()));
+//		System.out.println(generateGraph(analyzer.analyze()));
 	}
 	
 	
