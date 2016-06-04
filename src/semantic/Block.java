@@ -6,6 +6,12 @@ import java.util.LinkedHashMap;
 import lexcial.TokenInfo;
 import lexcial.TokenTypeEnum;
 
+
+/**
+ * Class to hold a Block's Variables Declarations
+ * @author ND88
+ *
+ */
 public class Block {
 	
 	int id;

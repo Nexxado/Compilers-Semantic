@@ -1,5 +1,10 @@
 package semantic;
 
+/**
+ * Class to hold a Variable References
+ * @author ND88
+ *
+ */
 public class Reference {
 	
 	private String name, declaration;;

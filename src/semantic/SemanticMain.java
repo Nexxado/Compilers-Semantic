@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import syntax.LL1Exception;
 import lexcial.TokenInfo;
 
 public class SemanticMain {
@@ -21,16 +22,16 @@ public class SemanticMain {
 		}
 		
 		String inputFilename = args[0];
-		Analyzed analyzed = new Analyzer(inputFilename).analyze();
-
-		//Generate redeclaration list and reference list
-		StringBuilder builder = new StringBuilder();
-		builder.append(buildRedeclarationsList(analyzed.getBlocks()));
-		builder.append(buildReferencesList(analyzed.getReferences()));
-		
 		
 		try {
+			
+			Analyzed analyzed = new Analyzer(inputFilename).analyze();
 
+			//Generate redeclaration list and reference list
+			StringBuilder builder = new StringBuilder();
+			builder.append(buildRedeclarationsList(analyzed.getBlocks()));
+			builder.append(buildReferencesList(analyzed.getReferences()));
+		
 			//Write redeclaration list and reference list to output file
 			String outputFilename = inputFilename.substring(0, inputFilename.lastIndexOf('.')) + ".sem";
 			File outputFile = new File(outputFilename);
@@ -41,6 +42,9 @@ public class SemanticMain {
 
 		} catch (IOException e) {
 			System.err.println("[ERROR] Failed writing to output file: " + e.toString());
+			return;
+		} catch (LL1Exception e) {
+			System.err.println("Syntax Mismatch");
 			return;
 		}
 		

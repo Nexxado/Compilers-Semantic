@@ -2,8 +2,10 @@ package semantic;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
 import lexcial.TokenInfo;
 import lexcial.TokenTypeEnum;
+import syntax.LL1Exception;
 import syntax.Parser;
 import syntax.TreeNode;
 
@@ -11,20 +13,24 @@ public class Analyzer {
 
 	//Filenames
 	private final String CONFIG = "src/semantic/config.txt";
-	private String input;
-	private int blockIdCounter;
 
-	private Parser parser;
-
+	//Identifiers
 	private final String DECLARATION_ID = "DECLARATION";
 	private final String ASSIGNMENT_ID = "ASSIGNMENT";
 	private final String BLOCK_ID = "BLOCK";
 
+	//Variables
+	private Parser parser;
+	private String input;
+	private int blockIdCounter;
 	private ArrayList<Block> blocks;
 	private ArrayList<Reference> references;
 
 
-
+	/**
+	 * Constructor 
+	 * @param inputFilename
+	 */
 	public Analyzer(String inputFilename) {
 		input = inputFilename;
 		parser = new Parser(CONFIG, input);
@@ -37,8 +43,9 @@ public class Analyzer {
 	/**
 	 * Analyze Grammar Tree
 	 * @return Analyzed
+	 * @throws LL1Exception 
 	 */
-	public Analyzed analyze() {
+	public Analyzed analyze() throws LL1Exception {
 
 		TreeNode root = parser.yyLL1parse();
 
@@ -114,7 +121,7 @@ public class Analyzer {
 
 	/**
 	 * Analyze Assignment Subtree
-	 * @param node : Initially - root of the declaration subtree
+	 * @param node : Initially - root of the assignment subtree
 	 * @param block : block object for current block
 	 */
 	private void analyzeAssignment(TreeNode node, Block block) {

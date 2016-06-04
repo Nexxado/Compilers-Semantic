@@ -50,8 +50,9 @@ public class Parser {
 	 * Parse Config file into LL(1) Table
 	 * Read Input file and parse grammar tree 
 	 * @return Grammer Tree root node.
+	 * @throws LL1Exception 
 	 */
-	public TreeNode yyLL1parse() {
+	public TreeNode yyLL1parse() throws LL1Exception {
 		
 		
 		parse_table = parseConfigFile(config);
@@ -142,9 +143,6 @@ public class Parser {
 			
 		} catch (FileNotFoundException e) {
 			System.err.println("[ERROR] Input File not Found:\n" + e.toString());
-			return null;
-		} catch (LL1Exception e) {
-			System.err.println("input is wrong according to LL(1) table");
 			return null;
 		}
 	}
